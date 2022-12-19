@@ -36,7 +36,6 @@ FROM gcr.io/deeplearning-platform-release/${DLC_IMAGE_NAME}
 RUN sudo apt-get update
 RUN sudo apt-get install -y bash ca-certificates fuse fio
 
-
 COPY --from=gcsfuse-package /tmp/bin/gcsfuse /usr/bin/gcsfuse
 COPY --from=gcsfuse-package /tmp/sbin/mount.gcsfuse /sbin/mount.gcsfuse
 
@@ -44,5 +43,11 @@ COPY --from=gcsfuse-package /tmp/sbin/mount.gcsfuse /sbin/mount.gcsfuse
 RUN echo "user_allow_other" > /etc/fuse.conf
 
 RUN pip3 install --user tf-models-official==2.10.0
+
+WORKDIR "/dlc_testing/"
+COPY --from=gcsfuse-package /run/gcsfuse/perfmetrics/dlc/resnet_runner.py ./
+
+RUN mkdir -p "myBucket"
+#CMD gcsfuse --implicit-dirs --max-conns-per-host 100 --disable-http2 --log-format text --debug_gcs --debug_fuse --debug_fs --log-file "/vm_mnt/gcsfuse.logs" --stackdriver-export-interval 60s ml-models-data-gcsfuse myBucket
 
 
