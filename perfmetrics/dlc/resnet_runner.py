@@ -15,7 +15,7 @@ import tensorflow_models as tfm
 from official.vision.serving import export_saved_model_lib
 import official.core.train_lib
 
-# os.system("sudo sh -c > 'echo 3 > /proc/sys/vm/drop_caches'")
+os.system("sudo sh -c 'sync; echo 3 >  /proc/sys/vm/drop_caches'")
 
 NUM_EPOCHS = 4
 exp_config = tfm.core.exp_factory.get_exp_config('resnet_imagenet')
@@ -76,7 +76,7 @@ if exp_config.runtime.mixed_precision_dtype == tf.float16:
   tf.keras.mixed_precision.set_global_policy('mixed_float16')
 
 if 'GPU' in ''.join(logical_device_names):
-  distribution_strategy = tf.distribute.MirroredStrategy()
+  distribution_strategy = tf.distribute.MultiWorkerMirroredStrategy()
 elif 'TPU' in ''.join(logical_device_names):
   tf.tpu.experimental.initialize_tpu_system()
   tpu = tf.distribute.cluster_resolver.TPUClusterResolver(tpu='/device:TPU_SYSTEM:0')
