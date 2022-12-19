@@ -50,6 +50,6 @@ COPY --from=gcsfuse-package /run/gcsfuse/perfmetrics/dlc/train_lib.py /root/.loc
 COPY --from=gcsfuse-package /run/gcsfuse/perfmetrics/dlc/controller.py /root/.local/lib/python3.7/site-packages/orbit/controller.py
 
 RUN mkdir -p "myBucket"
-#CMD gcsfuse --implicit-dirs --max-conns-per-host 100 --disable-http2 --log-format text --debug_gcs --debug_fuse --debug_fs --log-file "/vm_mnt/gcsfuse.logs" --stackdriver-export-interval 60s ml-models-data-gcsfuse myBucket
+#CMD gcsfuse --implicit-dirs --max-conns-per-host 100 --disable-http2 --log-format text --debug_gcs --debug_fuse --debug_fs --log-file "/home/logs/gcsfuse.logs" --stackdriver-export-interval 60s ml-models-data-gcsfuse myBucket
 
 
