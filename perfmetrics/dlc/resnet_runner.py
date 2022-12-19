@@ -15,7 +15,7 @@ import tensorflow_models as tfm
 from official.vision.serving import export_saved_model_lib
 import official.core.train_lib
 
-os.system("sudo sh -c > 'echo 3 > /proc/sys/vm/drop_caches'")
+# os.system("sudo sh -c > 'echo 3 > /proc/sys/vm/drop_caches'")
 
 NUM_EPOCHS = 4
 exp_config = tfm.core.exp_factory.get_exp_config('resnet_imagenet')
@@ -101,7 +101,7 @@ model, eval_logs = tfm.core.train_lib.run_experiment(
     run_post_eval=True,
     epochs=10,
     clear_kernel_cache=True)
-os.system("sudo sh -c 'echo 3 > /proc/sys/vm/drop_caches'")
+# os.system("sudo sh -c 'echo 3 > /proc/sys/vm/drop_caches'")
 new_time = time.perf_counter()
 bytes_new = psutil.net_io_counters().bytes_recv
 print((bytes_new-bytes_old)/(1024*1024))
