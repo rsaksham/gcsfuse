@@ -99,7 +99,7 @@ model, eval_logs = tfm.core.train_lib.run_experiment(
     params=exp_config,
     model_dir=model_dir,
     run_post_eval=True,
-    epochs=10,
+    epochs=1000,
     clear_kernel_cache=True)
 # os.system("sudo sh -c 'echo 3 > /proc/sys/vm/drop_caches'")
 new_time = time.perf_counter()
