@@ -1,1 +1,1 @@
-gcsfuse --implicit-dirs --max-conns-per-host 100 --disable-http2 --log-format text --foreground --debug_gcs --debug_fuse --debug_fs --log-file "/home/logs/gcsfuse.logs" --stackdriver-export-interval 60s $BUCKET_NAME myBucket > “/home/output/gcsfuse.out” 2> “/home/output/gcsfuse.err” &
+gcsfuse --implicit-dirs --max-conns-per-host 100 --disable-http2 --log-format text --foreground --debug_gcs --debug_fuse --debug_fs --log-file "/home/logs/gcsfuse.logs" --stackdriver-export-interval 60s $BUCKET_NAME myBucket > /home/output/gcsfuse.out 2> /home/output/gcsfuse.err &
