@@ -48,6 +48,8 @@ WORKDIR "/dlc_testing/"
 COPY --from=gcsfuse-package /run/gcsfuse/perfmetrics/dlc/resnet_runner.py ./
 COPY --from=gcsfuse-package /run/gcsfuse/perfmetrics/dlc/train_lib.py /root/.local/lib/python3.7/site-packages/official/core/train_lib.py
 COPY --from=gcsfuse-package /run/gcsfuse/perfmetrics/dlc/controller.py /root/.local/lib/python3.7/site-packages/orbit/controller.py
+COPY --from=gcsfuse-package /run/gcsfuse/perfmetrics/dlc/gcsfuse_mount.sh ./
+RUN chmod 777 gcsfuse_mount.sh
 
 RUN mkdir -p "myBucket"
 ENTRYPOINT sleep infinity
