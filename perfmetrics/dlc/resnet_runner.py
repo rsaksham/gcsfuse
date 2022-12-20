@@ -89,6 +89,9 @@ with distribution_strategy.scope():
   model_dir = tempfile.mkdtemp()
   task = tfm.core.task_factory.get_task(exp_config.task, logging_dir=model_dir)
 
+with open("/home/output/epochs", "w") as f:
+  f.write("Epoch: {0}, time: {1}\n".format(-1, time.time()))
+
 # tf.keras.utils.plot_model(task.build_model(), show_shapes=True)
 curr_time = time.perf_counter()
 bytes_old = psutil.net_io_counters().bytes_recv

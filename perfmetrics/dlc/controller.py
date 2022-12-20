@@ -231,7 +231,7 @@ class Controller:
     """
     self._require("trainer", for_method="train")
     total_steps = steps
-    for _ in range(epochs):
+    for epoch in range(epochs):
       # TODO(momernick): Support steps=None or -1 (training to exhaustion).
       current_step = self.global_step.numpy()  # Cache, since this is expensive.
       _log(f"train | step: {current_step: 6d} | training until step {steps}...")
@@ -242,6 +242,10 @@ class Controller:
         self._maybe_save_checkpoint()
         current_step = self.global_step.numpy()
       total_steps += steps
+
+      # write after
+      with open("/home/output/epochs", "a") as f:
+        f.write("Epoch: {0}, time: {1}\n".format(epoch, time.time()))
 
       if clear_kernel_cache:
         os.system("sudo sh -c 'echo 3 > /proc/sys/vm/drop_caches'")
