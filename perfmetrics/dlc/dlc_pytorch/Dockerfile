@@ -50,7 +50,7 @@ RUN git clone "https://github.com/facebookresearch/dino"
 
 COPY --from=gcsfuse-package /run/gcsfuse/perfmetrics/dlc/dlc_pytorch/main_dino.py dino/
 COPY --from=gcsfuse-package /run/gcsfuse/perfmetrics/dlc/dlc_pytorch/folder.py /opt/conda/lib/python3.7/site-packages/torchvision/datasets/folder.py
-COPY --from=gcsfuse-package /run/gcsfuse/perfmetrics/dlc/gcsfuse_mount.sh ./
+COPY --from=gcsfuse-package /run/gcsfuse/perfmetrics/dlc/dlc_pytorch/gcsfuse_mount.sh ./
 RUN chmod 777 gcsfuse_mount.sh
 
 RUN mkdir -p "myBucket"
