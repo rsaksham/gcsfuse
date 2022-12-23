@@ -19,7 +19,7 @@ import time
 import math
 import json
 from pathlib import Path
-
+import pickle
 import numpy as np
 from PIL import Image
 import torch
@@ -142,7 +142,15 @@ def train_dino(args):
       args.local_crops_scale,
       args.local_crops_number,
   )
-  dataset = datasets.ImageFolder(args.data_path, transform=transform)
+  pickle_path = "/home/model/data.pickle"
+  if (os.path.exists(pickle_path)):
+    with open(pickle_path, 'rb') as f:
+      dataset = pickle.load(f)
+  else:
+    dataset = datasets.ImageFolder(args.data_path, transform=transform)
+    with open(pickle_path, 'wb') as f:
+      pickle.dump(dataset, f)
+
   sampler = torch.utils.data.DistributedSampler(dataset, shuffle=True)
   data_loader = torch.utils.data.DataLoader(
       dataset,
