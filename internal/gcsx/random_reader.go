@@ -163,6 +163,7 @@ func (rr *randomReader) ReadAt(
 	ctx context.Context,
 	p []byte,
 	offset int64) (n int, err error) {
+	log.Println("Initial", offset, len(p))
 	for len(p) > 0 {
 		// Have we blown past the end of the object?
 		if offset >= int64(rr.object.Size) {
@@ -182,7 +183,7 @@ func (rr *randomReader) ReadAt(
 			n, _ := rr.reader.Read(p)
 			rr.start += int64(n)
 		}
-
+		log.Println("Second", rr.start, offset, rr.limit, len(p))
 		// If we have an existing reader but it's positioned at the wrong place,
 		// clean it up and throw it away.
 		if rr.reader != nil && rr.start != offset {
