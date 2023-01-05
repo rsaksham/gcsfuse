@@ -179,7 +179,13 @@ func (rr *randomReader) ReadAt(
 		// For parallel sequential reads to a single file, not throwing away the connections
 		// is a 15-20x improvement in throughput: 150-200 MB/s instead of 10 MB/s.
 		logger.Infof("Second", rr.start/(1024*1024), offset/(1024*1024), rr.limit/(1024*1024), len(p)/(1024*1024), rr.seeks)
-		if rr.reader != nil && rr.start < offset && offset-rr.start < maxReadSize {
+		//if rr.reader != nil && rr.start < offset && offset-rr.start < maxReadSize {
+		//	bytesToSkip := int64(offset - rr.start)
+		//	p := make([]byte, bytesToSkip)
+		//	n, _ := rr.reader.Read(p)
+		//	rr.start += int64(n)
+		//}
+		if rr.reader != nil && rr.start < offset && offset < rr.limit {
 			bytesToSkip := int64(offset - rr.start)
 			p := make([]byte, bytesToSkip)
 			n, _ := rr.reader.Read(p)
