@@ -161,9 +161,9 @@ func (rr *randomReader) CheckInvariants() {
 }
 
 func (rr *randomReader) ReadAt(
-		ctx context.Context,
-		p []byte,
-		offset int64) (n int, err error) {
+	ctx context.Context,
+	p []byte,
+	offset int64) (n int, err error) {
 	logger.Infof("Initial", offset/(1024*1024), len(p)/(1024*1204), rr.seeks)
 	for len(p) > 0 {
 		// Have we blown past the end of the object?
@@ -283,8 +283,8 @@ func (rr *randomReader) Destroy() {
 //
 // REQUIRES: rr.reader != nil
 func (rr *randomReader) readFull(
-		ctx context.Context,
-		p []byte) (n int, err error) {
+	ctx context.Context,
+	p []byte) (n int, err error) {
 	// Start a goroutine that will cancel the read operation we block on below if
 	// the calling context is cancelled, but only if this method has not already
 	// returned (to avoid souring the reader for the next read if this one is
@@ -318,9 +318,9 @@ func (rr *randomReader) readFull(
 // a prefix. Irrespective of the size requested, we try to fetch more data
 // from GCS defined by sequentialReadSizeMb flag to serve future read requests.
 func (rr *randomReader) startRead(
-		ctx context.Context,
-		start int64,
-		size int64) (err error) {
+	ctx context.Context,
+	start int64,
+	size int64) (err error) {
 	// Make sure start and size are legal.
 	if start < 0 || uint64(start) > rr.object.Size || size < 0 {
 		err = fmt.Errorf(
@@ -365,7 +365,7 @@ func (rr *randomReader) startRead(
 	// To avoid overloading GCS and to have reasonable latencies, we will only
 	// fetch data of max size defined by sequentialReadSizeMb.
 	//maxSizeToReadFromGCS := int64(rr.sequentialReadSizeMb * MB)
-	maxSizeToReadFromGCS := int64(100 * MB)
+	maxSizeToReadFromGCS := int64(300 * MB)
 	if end-start > maxSizeToReadFromGCS {
 		end = start + maxSizeToReadFromGCS
 	}
