@@ -164,7 +164,7 @@ func (rr *randomReader) ReadAt(
 	ctx context.Context,
 	p []byte,
 	offset int64) (n int, err error) {
-	logger.Infof("Initial", offset, len(p))
+	logger.Infof("Initial", offset/(1024*1024), len(p)/(1024*1204), rr.seeks)
 	for len(p) > 0 {
 		// Have we blown past the end of the object?
 		if offset >= int64(rr.object.Size) {
@@ -178,14 +178,14 @@ func (rr *randomReader) ReadAt(
 		// re-use GCS connection and avoid throwing away already read data.
 		// For parallel sequential reads to a single file, not throwing away the connections
 		// is a 15-20x improvement in throughput: 150-200 MB/s instead of 10 MB/s.
-		logger.Infof("Second", rr.start, offset, rr.limit, len(p))
+		logger.Infof("Second", rr.start/(1024*1024), offset/(1024*1024), rr.limit/(1024*1024), len(p)/(1024*1024), rr.seeks)
 		if rr.reader != nil && rr.start < offset && offset-rr.start < maxReadSize {
 			bytesToSkip := int64(offset - rr.start)
 			p := make([]byte, bytesToSkip)
 			n, _ := rr.reader.Read(p)
 			rr.start += int64(n)
 		}
-		logger.Infof("Third", rr.start, offset, rr.limit, len(p))
+		logger.Infof("Third", rr.start/(1024*1024), offset/(1024*1024), rr.limit/(1024*1024), len(p)/(1024*1024), rr.seeks)
 		// If we have an existing reader but it's positioned at the wrong place,
 		// clean it up and throw it away.
 		if rr.reader != nil && rr.start != offset {
