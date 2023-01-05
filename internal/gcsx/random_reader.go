@@ -344,30 +344,30 @@ func (rr *randomReader) startRead(
 	// (average read size in bytes rounded up to the next MB).
 	end := int64(rr.object.Size)
 	readType := sequential
-	if rr.seeks >= minSeeksForRandom {
-		readType = random
-		averageReadBytes := rr.totalReadBytes / rr.seeks
-		if averageReadBytes < maxReadSize {
-			randomReadSize := int64(((averageReadBytes / MB) + 1) * MB)
-			if randomReadSize < minReadSize {
-				randomReadSize = minReadSize
-			}
-			if randomReadSize > maxReadSize {
-				randomReadSize = maxReadSize
-			}
-			end = start + randomReadSize
-		}
-	}
-	if end > int64(rr.object.Size) {
-		end = int64(rr.object.Size)
-	}
-
-	// To avoid overloading GCS and to have reasonable latencies, we will only
-	// fetch data of max size defined by sequentialReadSizeMb.
-	maxSizeToReadFromGCS := int64(rr.sequentialReadSizeMb * MB)
-	if end-start > maxSizeToReadFromGCS {
-		end = start + maxSizeToReadFromGCS
-	}
+	//if rr.seeks >= minSeeksForRandom {
+	//	readType = random
+	//	averageReadBytes := rr.totalReadBytes / rr.seeks
+	//	if averageReadBytes < maxReadSize {
+	//		randomReadSize := int64(((averageReadBytes / MB) + 1) * MB)
+	//		if randomReadSize < minReadSize {
+	//			randomReadSize = minReadSize
+	//		}
+	//		if randomReadSize > maxReadSize {
+	//			randomReadSize = maxReadSize
+	//		}
+	//		end = start + randomReadSize
+	//	}
+	//}
+	//if end > int64(rr.object.Size) {
+	//	end = int64(rr.object.Size)
+	//}
+	//
+	//// To avoid overloading GCS and to have reasonable latencies, we will only
+	//// fetch data of max size defined by sequentialReadSizeMb.
+	//maxSizeToReadFromGCS := int64(rr.sequentialReadSizeMb * MB)
+	//if end-start > maxSizeToReadFromGCS {
+	//	end = start + maxSizeToReadFromGCS
+	//}
 
 	// Begin the read.
 	ctx, cancel := context.WithCancel(context.Background())
