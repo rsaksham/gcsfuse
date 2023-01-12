@@ -44,6 +44,10 @@ RUN echo "user_allow_other" > /etc/fuse.conf
 
 RUN pip3 install --user tf-models-official==2.10.0
 
+# Fail building the container image if folder.py is not at expcted location.
+RUN sh -c 'if [ -f "/root/.local/lib/python3.7/site-packages/official/core/train_lib.py" ]; then echo "file exists"; else echo "train_lib.py file not present in expected location. Please correct the location. Exiting"; exit 1; fi'
+RUN sh -c 'if [ -f "/root/.local/lib/python3.7/site-packages/orbit/controller.py" ]; then echo "file exists"; else echo "controller.py file not present in expected location. Please correct the location. Exiting"; exit 1; fi'
+
 WORKDIR "/dlc_testing/"
 COPY --from=gcsfuse-package /run/gcsfuse/perfmetrics/dlc/resnet_runner.py ./
 COPY --from=gcsfuse-package /run/gcsfuse/perfmetrics/dlc/train_lib.py /root/.local/lib/python3.7/site-packages/official/core/train_lib.py

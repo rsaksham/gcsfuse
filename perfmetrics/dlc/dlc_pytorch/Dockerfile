@@ -48,6 +48,9 @@ WORKDIR "/dlc_testing/"
 
 RUN git clone "https://github.com/facebookresearch/dino"
 
+# Fail building the container image if folder.py is not at expcted location.
+RUN sh -c 'if [ -f "/opt/conda/lib/python3.7/site-packages/torchvision/datasets/folder.py" ]; then echo "file exists"; else echo "folder.py file not present in expected location. Please correct the location. Exiting"; exit 1; fi'
+
 COPY --from=gcsfuse-package /run/gcsfuse/perfmetrics/dlc/dlc_pytorch/main_dino.py dino/
 COPY --from=gcsfuse-package /run/gcsfuse/perfmetrics/dlc/dlc_pytorch/folder.py /opt/conda/lib/python3.7/site-packages/torchvision/datasets/folder.py
 COPY --from=gcsfuse-package /run/gcsfuse/perfmetrics/dlc/dlc_pytorch/gcsfuse_mount.sh ./
